@@ -1,0 +1,160 @@
+#Python Robot Code
+
+class Eye:
+   ###############################################
+   # Helping functions
+   ###############################################
+   def __trace(self, s):
+      print(s)
+
+   ###############################################
+   # Manager functions
+   ###############################################
+   # Constructor
+   def __init__(self, w, h):
+      # Attribute is put into the private area
+      self.__w = w
+      self.__h = h
+
+   ###############################################
+   # Access function
+   ###############################################
+   # Get method
+   def getW(self):
+      return(self.__w)
+   def getH(self):
+      return(self.__h)
+
+   # Set method
+   def setW(self,w1):
+      self.__w = w1
+   def setH(self,h1):
+      self.__w = h1
+      
+   # Predictae function
+   def isSquare(self):
+       return self.__w == self.__h
+       
+   ###############################################
+   # Implementor function
+   ###############################################    
+   def area(self) :
+       return self.__w * self.__h
+   def toString(self):
+      result = "Eye's width = " + str(self.__w) + "\n" 
+      result += "Eye's height = " + str(self.__h) + "\n" 
+      return(result)
+
+class Mouth:
+   ###############################################
+   # Helping functions
+   ###############################################
+   def __trace(self, s):
+      print(s)
+   def pi(self):
+      return (3.14)
+   ###############################################
+   # Manager functions
+   ###############################################
+   # Constructor
+   def __init__(self, r):
+      # Attribute is put into the private area
+      self.__r = r
+   ###############################################
+   # Access function
+   ###############################################
+   # Get method
+   def getR(self):
+      return(self.__r)
+   # Set method
+   def setR(self,r1):
+      self.__r = r1
+   def isLarge(self):
+      return self.__r > 10
+     
+   ###############################################
+   # Implementor function
+   ###############################################    
+   def area(self) :
+       return self.pi() * self.__r * self.__r
+   def toString(self):
+      result = "Mouth's radius = " + str(self.__r) + "\n" 
+      return(result)
+
+class Robot:
+   ###############################################
+   # Helping functions
+   ###############################################
+   def __trace(self, s):
+      print(s)
+   ###############################################
+   # Manager functions
+   ###############################################
+   # Constructor
+   def __init__(self, s, w1, h1, w2, h2, r):
+      self.__side = s
+      self.__eyes = (Eye(w1, h1), Eye(w2,h2))
+      self.__m = Mouth(r)
+   ###############################################
+   # Access function
+   ###############################################
+   # Get method
+   def getSide(self):
+      return(self.__side)
+   def getM(self):
+      return(self.__m)
+   def Eyes(self):
+      return(self.__Eyes)
+   def getEye(self, i):
+      return(self.__eyes[i])
+   # Set method
+   def setSide(self, s):
+      self.__side = s
+   def setM(self, r):
+      self.__r = r
+   def setEye(self, i, w1, h1):
+      self.__eyes[i].setW(w1)
+      self.__eyes[i].setH(h1)
+      
+   def isLarge(self):
+      return self.__side > 100
+      
+   ###############################################
+   # Implementor function
+   ###############################################    
+   def destroy(self) :
+      self.__side = 0
+   def toString(self):
+      result = "side = " + str(self.__side) + "\n" 
+      result += self.getM().toString()
+      for obj in self.__eyes:
+          result += obj.toString() + "\n" 
+      return (result)
+      
+R2D2 = Robot(10,3,2,3,2,1)
+
+print("Display Robot R2D2")
+print(R2D2.toString())
+
+print("R2D2 side is", R2D2.getSide())
+print("R2D2 eye 0 has w =", R2D2.getEye(0).getW(), "and h = ",
+       R2D2.getEye(0).getH())
+print("R2D2 eye 1 has w =", R2D2.getEye(1).getW(), "and h = ",
+       R2D2.getEye(1).getH())
+print("R2D2 mouth is", R2D2.getM().getR())
+==> Output
+Display Robot R2D2
+side = 10
+Mouth's radius = 1
+Eye's width = 3
+Eye's height = 2
+
+Eye's width = 3
+Eye's height = 2
+
+
+R2D2 side is 10
+R2D2 eye 0 has w = 3 and h =  2
+R2D2 eye 1 has w = 3 and h =  2
+R2D2 mouth is 1
+    
