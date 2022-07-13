@@ -1,0 +1,174 @@
+//header file.
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+class publication
+{
+    private: 
+        string title;
+        float price;
+    public:
+        publication()
+        {
+            title = " ";
+            price = 0.0;
+        }
+    publication(string t, float pr)
+    {
+        title = t;
+        price = pr;
+        
+    }
+    void getdata()
+    {
+        cout << "Please enter the title of the book: " << endl;
+        cin >> title;
+        cout << "Please enter the price of the book: " << endl;
+        cin >> price;
+    }
+    void putdata(void)
+    {
+        cout << "The publication title is: " << title << endl;
+        cout << "The publication price is: " << "$ " << price << endl;
+    }
+};
+
+//cpp file.
+
+class sales
+{
+    private:
+        float sl1, sl2, sl3;
+    public:
+        void getdata(void)
+        {
+            cout << "Please enter the first month sale: " << "$" << endl;
+            cin >> sl1;
+            cout << "Please enter the second month sale: " << "$" << endl;
+            cin >> sl2;
+            cout << "Please enter the third month sale: " << "$" << endl;
+            cin >> sl3;
+        }
+        void putdata(void)
+        {
+            cout << "The first month sale is: " << "$" << sl1 << endl;
+            cout << "The second month sale is: " << "$" << sl2 << endl;
+            cout << "The third month sale is: " << "$" << sl3 << endl;
+        }
+};
+
+class book: public publication, public sales
+{
+    int pagecount;
+    public:
+        book()
+        {
+            pagecount = 0.0;
+        }
+        book(string t, float pr, int pgcnt):publication(t, pr)
+        {
+            pagecount = pgcnt;
+        }
+        void getdata(void)
+        {
+            publication::getdata();
+            sales::getdata();
+            cout << "Please enter the number of pages for the book: ";
+            cin >> pagecount;
+        }
+        void putdata(void)
+        {
+            publication::putdata();
+            sales::putdata();
+            cout << "The book has " << pagecount << " pages." << endl;
+        }
+};
+
+class tape: public publication, public sales
+{
+    float timeMin;
+    public:
+        tape()
+        {
+            timeMin = 0.0;
+        }
+        tape(string t, float pr, float tm):publication(t, pr)
+        {
+            timeMin = tm;
+        }
+        void getdata(void)
+        {
+            publication::getdata();
+            sales::getdata();
+            cout << "Please enter the tape's playing time in minutes: ";
+            cin >> timeMin;
+        }
+        void putdata(void)
+        {
+            publication::putdata();
+            sales::putdata();
+            cout << "The Tape's playing time in minutes is: " << timeMin << endl;
+            cout << endl;
+        }
+};
+
+class disk : public publication
+{
+    private:
+        enum disktype
+        {CD, DVD};
+        disktype useroption;
+    public:
+        void getdata(void)
+        {
+            char dk;
+            publication::getdata();
+            cout << "Please enter a disk type: 'c' or 'd'? ";
+            cin >> dk;
+            if (dk == 'c')
+                useroption = CD;
+            else
+                useroption = DVD;
+            
+        }
+        void putdata()
+        {
+            publication::putdata();
+            cout << "The disk type is: ";
+            if (useroption == CD)
+                cout << "It's CD format.";
+            else
+                cout << "It's DVD format.";
+        }
+};
+
+
+//main file.
+
+int main(void)
+{
+    cout << "Here is the publication's details: " << endl;
+    book a("The 13: We all Start as Strangers", 800, 55);
+    a.putdata();
+    cout << endl;
+    cout << "The Tape's details are: " << endl;
+    tape tp("The 13: We all Start as Strangers, audio version", 100, 200);
+    tp.putdata();
+    cout << endl;
+    cout << "---------------------------------------------" << endl;
+    cout << endl;
+    cout << "PLEASE ENTER DETAILS OF NEW BOOK BELOW!" << endl;
+    cout << endl;
+    disk d;
+    a.getdata();
+    a.putdata();
+    tp.getdata();
+    tp.putdata();
+    d.getdata();
+    d.putdata();
+
+    
+    return 0;
+}
