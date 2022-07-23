@@ -1,0 +1,132 @@
+#include <iostream>
+#include <cstdlib>
+#include <cstdio>
+using namespace std;
+
+//header file
+class polynomial 
+{
+    public:
+        int degree;
+        int poly[100];
+        
+polynomial() 
+{
+    degree = 0;
+    for(int i = 0; i<100; i++)
+    poly[i] = 0;
+}
+~polynomial(){}
+void set()
+{
+cout<<"Please enter the degree of your polynomial?"<<endl;
+cin>>degree;
+for(int i = degree; i>=0 ; i--)
+{
+cout<<"Please enter the coefficient of "<<i<<" power of x"<<endl;
+int coeff;
+cin>>coeff;
+poly[i] = coeff;
+}
+}
+void get()
+{
+cout<<"Your polynomial is: "<<endl;
+for(int i = degree; i>0; i--)
+{
+if(poly[i])
+cout<<poly[i]<<"X"<<i<<" + ";
+}
+cout<<poly[0]<<endl;
+}
+polynomial operator+(polynomial poly2);
+polynomial operator-(polynomial poly2);
+void operator=(polynomial poly2);
+polynomial operator*(polynomial poly2);
+void operator+=(polynomial poly2);
+void operator-=(polynomial poly2);
+void operator*=(polynomial poly2);
+
+
+};
+
+//cpp file
+
+polynomial polynomial::operator+(polynomial poly2)
+{
+polynomial temp;
+temp.degree = degree>poly2.degree?degree:poly2.degree;
+for(int i = temp.degree; i>= 0; i--)
+temp.poly[i] = poly[i] + poly2.poly[i];
+return temp;
+}
+
+polynomial polynomial::operator-(polynomial poly2)
+{
+polynomial temp;
+temp.degree = degree>poly2.degree?degree:poly2.degree;
+for(int i = temp.degree; i>= 0; i--)
+temp.poly[i] = poly[i] - poly2.poly[i];
+return temp;
+}
+
+void polynomial::operator=(polynomial poly2)
+{
+degree = poly2.degree;
+for(int i = poly2.degree; i>= 0; i--)
+poly[i] = poly2.poly[i];
+return;
+}
+
+polynomial polynomial::operator*(polynomial poly2)
+{
+polynomial temp;
+temp.degree = degree*poly2.degree;
+for(int i = degree; i>=0; i--)
+{
+for(int j = poly2.degree; j>= 0; j--)
+temp.poly[i*j] += poly[i]*poly[j];
+}
+return temp;
+}
+
+void polynomial::operator+=(polynomial poly2)
+{
+*this = (*this + poly2);
+}
+
+void polynomial::operator-=(polynomial poly2)
+{
+*this = (*this - poly2);
+}
+
+void polynomial::operator*=(polynomial poly2)
+{
+*this = (*this * poly2);
+}
+
+//main file 
+
+int main()
+{
+polynomial poly1, poly2, poly3;
+poly1.set();
+poly2.set();
+poly1.get();
+poly2.get();
+poly3 = (poly1 + poly2);
+poly3.get();
+poly3 = (poly1 * poly2);
+poly3.get();
+poly3 = (poly1 - poly2);
+poly3.get();
+poly3 = poly1;
+poly3.get();
+poly1 += poly2;
+poly1.get();
+poly1 -= poly2;
+poly1.get();
+poly1 *= poly2;
+poly1.get();
+return 0;
+}
