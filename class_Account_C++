@@ -1,0 +1,195 @@
+Bank/ATM 
+
+#include <iostream>
+#include <iomanip>
+#include <stdexcept>
+using namespace std;
+
+#ifndef ACCOUNT_H
+#define ACCOUNT_H
+class Account
+{
+    public:
+        Account(double);
+        void credit(double);
+        bool debit(double);
+        void setBalance(double);
+        double getBalance();
+    private:
+        double balance;
+};
+
+#endif
+
+#ifndef SAVINGS_H
+#define SAVINGS_H
+
+//#include "Account.h" 
+
+class SavingsAccount: public Account{
+    public:
+        SavingsAccount(double, double);
+        double calculateInterest();
+    private:
+        double interestRate;
+};
+
+#endif
+
+#ifndef CHECKING_H
+#define CHECKING_H
+
+//#include "Account.h"
+
+class CheckingAccount: public Account
+{
+    public:
+        CheckingAccount(double, double);
+        void credit(double);
+        bool debit(double);
+    private:
+        double transactionFee;
+        void chargeFee();
+};
+
+#endif
+
+//#include Account.h"
+
+Account::Account(double initialBalance)
+{
+    if (initialBalance >= 0.0)
+        balance = initialBalance;
+    else
+        throw invalid_argument("The initial balance is too low.");
+}
+
+void Account::credit(double amount)
+{
+    balance = balance + amount;
+}
+
+bool Account::debit(double amount)
+{
+    if (amount > balance)
+    { 
+        cout << "The amount in debit has exceeded in account balance." << endl;
+        return false;
+    }
+    else
+    {
+        balance = balance - amount;
+        return true;
+    }
+}
+
+void Account::setBalance(double newBalance)
+{
+    balance = newBalance;
+}
+
+double Account::getBalance()
+{
+    return balance;
+}
+
+SavingsAccount::SavingsAccount(double initialBalance, double rate): Account(initialBalance)
+{
+    if (rate >= 0.0)
+        interestRate = rate;
+    else
+        throw invalid_argument("The interest rate must be greater or equal to 0.0");
+}
+double SavingsAccount::calculateInterest()
+{
+    return getBalance() * interestRate;
+}
+
+CheckingAccount::CheckingAccount(double initialBalance, double fee) : Account(initialBalance)
+{
+    if (fee >= 0.0)
+        transactionFee = fee;
+    else
+        throw invalid_argument("The transaction fee must be greater or equal to 0.0");
+}
+
+void CheckingAccount::credit(double amount)
+{
+    Account::credit(amount);
+    chargeFee();
+}
+
+bool CheckingAccount::debit(double amount)
+{
+    bool successful = Account::debit(amount);
+    
+    if (successful)
+    {
+        chargeFee();
+        return true;
+    }
+    else
+        return false;
+}
+
+void CheckingAccount::chargeFee()
+{
+    Account::setBalance(getBalance() - transactionFee);
+    cout << endl;
+    cout << "This is the transaction fee that has been charged: " << "$" << transactionFee << endl;
+}
+
+int main()
+{
+    Account acc1(10.0);
+    SavingsAccount acc2(15.0, 0.5);
+    CheckingAccount acc3(100.0, 20.0);
+    
+    cout << fixed << setprecision(5);
+    
+    cout << "The account balance for account 1 is: " << "$" << acc1.getBalance() << endl;
+    cout << "The account balance for account 2 is: " << "$" << acc2.getBalance() << endl;
+    cout << "The account balance for account 3 is: " << "$" << acc3.getBalance() << endl;
+    
+    cout << endl;
+    
+    cout << "Withdraw amount from account 1. " << endl;
+    acc1.debit(5.0);
+    cout << "Withdraw amount from account 2. " << endl;
+    acc2.debit(10.0);
+    cout << "Withdraw amount from account 3. " << endl;
+    acc3.debit(20.0);
+    
+    cout << endl;
+    
+    cout << "The balance in account 1 is: " << "$" << acc1.getBalance() << endl;
+    cout << "The balance in account 2 is: " << "$" << acc2.getBalance() << endl;
+    cout << "The balance in account 3 is: " << "$" << acc3.getBalance() << endl;
+    
+    cout << endl;
+    
+    cout << "Credit $30.0 to account 1." << endl;
+    acc1.credit(30.0);
+    cout << "Credit $40.0 to account 2." << endl;
+    acc2.credit(40.0);
+    cout << "Credit $50.0 to account 3." << endl;
+    acc3.credit(50.0);
+    
+    cout << endl;
+    
+    cout << "The balance in account 1 is: " << "$" << acc1.getBalance() << endl;
+    cout << "The balance in account 2 is: " << "$" << acc2.getBalance() << endl;
+    cout << "The balance in account 3 is: " << "$" << acc3.getBalance() << endl;
+
+    cout << endl;
+    
+    double interestEarned = acc2.calculateInterest();
+    cout << "After adding interest to account 2: " << interestEarned << endl;
+    acc2.credit(interestEarned);
+    cout << "The balance in account 2 now is: " << acc2.getBalance() << endl;
+    
+}
+
+
+
+
